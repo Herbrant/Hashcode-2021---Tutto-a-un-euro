@@ -6,7 +6,8 @@ class Street:
         self.L = -1
 
         self.passing_cars = []
-        self.score = 0.0
+
+        self.interested_cars = 0
 
     def add_car(self, car):
         self.passing_cars.append(car)

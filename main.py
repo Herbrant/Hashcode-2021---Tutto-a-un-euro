@@ -31,22 +31,46 @@ def output(filename, lines):
     outfile.write("\n".join(lines))
 
 def solve(state, intersections, streets, cars):
-    print(state)
+    # print(state)
 
-    print("\nStreets")
-    for _, street in streets.items():
-        print("#####")
-        print(street)
+    # print("\nStreets")
+    # for _, street in streets.items():
+    #     print("#####")
+    #     print(street)
 
-    print("\nCars")
-    for car in cars:
-        print(car)
+    # print("\nCars")
+    # for car in cars:
+    #     print(car)
 
-    print ("\nIntersections")
-    for intersection in intersections:
-        print(intersection)
+    # print ("\nIntersections")
+    # for intersection in intersections:
+    #     print(intersection)
 
     schedules = []
+
+    for intersection in intersections:
+        loop_size = min(state.D, 5)
+
+        priorities = dict()
+        
+        total_interested_cars = 0
+        for street in intersection.streets:
+            total_interested_cars += street.interested_cars
+
+        if total_interested_cars == 0:
+            continue
+
+        for street in intersection.streets:
+            priorities[street.name] = street.interested_cars / total_interested_cars
+
+        schedule = Schedule()
+
+        schedule.i = intersection.id
+
+        for street in intersection.streets:
+            schedule.add_command(Command(street.name, int(loop_size * priorities[street.name])))
+
+        schedules.append(schedule)
 
     return schedules
 
@@ -84,7 +108,9 @@ def __build_cars(lines, streets):
 
         car.P = int(fragments[0])
         for street in fragments[1:]:
-            car.add_target(street.strip())
+            street = street.strip()
+            car.add_target(street)
+            streets[street].interested_cars += 1
 
         car.id = len(cars)
         cars.append(car)
