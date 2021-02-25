@@ -1,4 +1,4 @@
-from Schedule import Schedule
+from Schedule import Command, Schedule
 from Car import Car
 from Street import Street
 from State import State
@@ -7,14 +7,27 @@ import sys
 def main():
     state, streets, cars = read_input(open(f"input/{sys.argv[1]}.txt", "r"))
 
-    output_lines = solve(state, streets, cars)
+    schedules = solve(state, streets, cars)
+    output_lines = __build_output(schedules)
 
     output(f"output/out_{sys.argv[1]}.txt", output_lines)
+
+def __build_output(schedules):
+    lines = []
+    lines.append(str(len(schedules)))
+
+    for schedule in schedules:
+        lines.append(str(schedule.i))
+        lines.append(str(schedule.E))
+        for command in schedule.commands:
+            lines.append(f"{command.name} {command.T}")
+
+    return lines
 
 def output(filename, lines):
     outfile = open(filename, "w")
 
-    outfile.writelines(lines)
+    outfile.write("\n".join(lines))
 
 def solve(state, streets, cars):
     print(state)
@@ -30,6 +43,13 @@ def solve(state, streets, cars):
         print(car)
 
     schedules = []
+
+    test_schedule = Schedule()
+    test_schedule.i = 0
+    test_schedule.add_command(Command("rue-de-londres", 1))
+    test_schedule.add_command(Command("rue-de-amsterdam", 1))
+
+    schedules.append(test_schedule)
 
     return schedules
 

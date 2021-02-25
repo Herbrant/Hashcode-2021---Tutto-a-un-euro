@@ -1,10 +1,16 @@
+class Command:
+    def __init__(self, name, T):
+        self.name = name
+        self.T = T
+
 class Schedule:
     def __init__(self):
         self.i = -1
-        self.E = -1
         self.commands = []
 
-class Command:
-    def __init__(self):
-        self.name = None
-        self.T = -1
+    @property
+    def E(self) -> int:
+        return len(self.commands)
+
+    def add_command(self, command: Command):
+        self.commands.append(command)
