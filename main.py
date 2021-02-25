@@ -1,3 +1,4 @@
+from Schedule import Schedule
 from Car import Car
 from Street import Street
 from State import State
@@ -28,7 +29,9 @@ def solve(state, streets, cars):
         print("#####")
         print(car)
 
-    return []
+    schedules = []
+
+    return schedules
 
 def read_input(input_file):
     lines = input_file.readlines()
