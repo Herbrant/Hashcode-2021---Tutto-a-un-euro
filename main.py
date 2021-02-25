@@ -68,7 +68,9 @@ def solve(state, intersections, streets, cars):
         schedule.i = intersection.id
 
         for street in intersection.streets:
-            schedule.add_command(Command(street.name, int(loop_size * priorities[street.name])))
+            time_span = int(loop_size * priorities[street.name])
+            if time_span > 0:
+                schedule.add_command(Command(street.name, ))
 
         schedules.append(schedule)
 
