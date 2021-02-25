@@ -1,3 +1,4 @@
+from Intersection import Intersection
 from Schedule import Command, Schedule
 from Car import Car
 from Street import Street
@@ -43,13 +44,6 @@ def solve(state, streets, cars):
 
     schedules = []
 
-    test_schedule = Schedule()
-    test_schedule.i = 0
-    test_schedule.add_command(Command("rue-de-londres", 1))
-    test_schedule.add_command(Command("rue-de-amsterdam", 1))
-
-    schedules.append(test_schedule)
-
     return schedules
 
 def read_input(input_file):
@@ -62,6 +56,11 @@ def read_input(input_file):
     cars = __build_cars(lines[1 + state.S: 1 + state.S + state.V], streets)
 
     return state, streets, cars
+
+def __build_intersections(state):
+    intersections = []
+    
+    return intersections
 
 def __build_cars(lines, streets):
     cars = []
