@@ -32,14 +32,13 @@ def output(filename, lines):
 def solve(state, streets, cars):
     print(state)
 
-    print("Streets")
-    for street in streets:
+    print("\nStreets")
+    for _, street in streets.items():
         print("#####")
         print(street)
 
-    print("Cars")
+    print("\nCars")
     for car in cars:
-        print("#####")
         print(car)
 
     schedules = []
@@ -60,11 +59,11 @@ def read_input(input_file):
 
     streets = __build_streets(lines[1:1 + state.S])
 
-    cars = __build_cars(lines[1 + state.S: 1 + state.S + state.V])
+    cars = __build_cars(lines[1 + state.S: 1 + state.S + state.V], streets)
 
     return state, streets, cars
 
-def __build_cars(lines):
+def __build_cars(lines, streets):
     cars = []
 
     for line in lines:
@@ -76,12 +75,15 @@ def __build_cars(lines):
         for street in fragments[1:]:
             car.add_target(street.strip())
 
+        car.id = len(cars)
         cars.append(car)
+
+        streets[fragments[1]].add_car(car)
 
     return cars
 
 def __build_streets(lines):
-    streets = []
+    streets = dict()
 
     for line in lines:
         fragments = line.split(' ')
@@ -92,7 +94,7 @@ def __build_streets(lines):
         street.name = str(fragments[2]).strip()
         street.L = int(fragments[3])
 
-        streets.append(street)
+        streets[street.name] = street
 
     return streets
 
