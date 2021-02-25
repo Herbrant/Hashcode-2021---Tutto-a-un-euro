@@ -57,8 +57,16 @@ def read_input(input_file):
 
     return state, streets, cars
 
-def __build_intersections(state):
+def __build_intersections(state, streets):
     intersections = []
+
+    for i state.i:
+        inter = Intersection()
+        inter.id = i
+    
+    return intersections
+
+
     
     return intersections
 
@@ -83,6 +91,7 @@ def __build_cars(lines, streets):
 
 def __build_streets(lines):
     streets = dict()
+    intersections = self.__build_intersections()
 
     for line in lines:
         fragments = line.split(' ')
@@ -94,6 +103,9 @@ def __build_streets(lines):
         street.L = int(fragments[3])
 
         streets[street.name] = street
+
+        intersections[B].add_street(street)
+        intersections[E].add_Street(street)
 
     return streets
 
