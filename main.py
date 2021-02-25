@@ -59,7 +59,8 @@ def solve(state, intersections, streets, cars):
         for street in intersection.streets:
             total_interested_cars += street.interested_cars
 
-        loop_size = max(1, total_interested_cars)
+        # loop_size = max(1, total_interested_cars)
+        base_time = 2
 
         schedule = Schedule()
         schedule.i = intersection.id
@@ -69,14 +70,14 @@ def solve(state, intersections, streets, cars):
                 priorities[street.name] = street.interested_cars / total_interested_cars
 
             for street in intersection.streets:
-                time_span = int(loop_size * priorities[street.name])
-                if time_span > 0:
-                    schedule.add_command(Command(street.name, time_span))
+                time_span = base_time # int(loop_size * priorities[street.name])
+                schedule.add_command(Command(street.name, time_span))
 
         # Naive, when no commands where added activate randomly
         if len(schedule.commands) == 0:
             naive_counts += 1
-            schedule.add_command(Command(intersection.streets[0].name, 1))
+            for street in intersection.streets:
+                schedule.add_command(Command(street.name, base_time))
 
         schedules.append(schedule)
 
