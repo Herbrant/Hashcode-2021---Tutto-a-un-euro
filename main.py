@@ -70,7 +70,7 @@ def solve(state, intersections, streets, cars):
         for street in intersection.streets:
             time_span = int(loop_size * priorities[street.name])
             if time_span > 0:
-                schedule.add_command(Command(street.name, ))
+                schedule.add_command(Command(street.name, time_span))
 
         schedules.append(schedule)
 
