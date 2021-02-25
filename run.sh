@@ -1,5 +1,5 @@
 #!/bin/bash
-FILE=$2
+FILE=$1
 
 if [ -z "$FILE" ]; then
 	echo "USE: ./run.sh INPUT_FILE"
