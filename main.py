@@ -6,9 +6,9 @@ from State import State
 import sys
 
 def main():
-    state, streets, cars = read_input(open(f"input/{sys.argv[1]}.txt", "r"))
+    state, intersections, streets, cars = read_input(open(f"input/{sys.argv[1]}.txt", "r"))
 
-    schedules = solve(state, streets, cars)
+    schedules = solve(state, intersections, streets, cars)
     output_lines = __build_output(schedules)
 
     output(f"output/out_{sys.argv[1]}.txt", output_lines)
@@ -30,7 +30,7 @@ def output(filename, lines):
 
     outfile.write("\n".join(lines))
 
-def solve(state, streets, cars):
+def solve(state, intersections, streets, cars):
     print(state)
 
     print("\nStreets")
@@ -42,6 +42,10 @@ def solve(state, streets, cars):
     for car in cars:
         print(car)
 
+    print ("\nIntersections")
+    for intersection in intersections:
+        print(intersection)
+
     schedules = []
 
     return schedules
@@ -51,22 +55,22 @@ def read_input(input_file):
 
     state = __build_state(lines[0])
 
-    streets = __build_streets(lines[1:1 + state.S])
+    intersections = __build_intersections(state)
+
+    streets = __build_streets(lines[1:1 + state.S], intersections)
 
     cars = __build_cars(lines[1 + state.S: 1 + state.S + state.V], streets)
 
-    return state, streets, cars
+    return state, intersections, streets, cars
 
-def __build_intersections(state, streets):
+def __build_intersections(state):
     intersections = []
 
-    for i state.i:
+    for i in range(0, state.I):
         inter = Intersection()
         inter.id = i
-    
-    return intersections
 
-
+        intersections.append(inter)
     
     return intersections
 
@@ -89,9 +93,8 @@ def __build_cars(lines, streets):
 
     return cars
 
-def __build_streets(lines):
+def __build_streets(lines, intersections):
     streets = dict()
-    intersections = self.__build_intersections()
 
     for line in lines:
         fragments = line.split(' ')
@@ -104,8 +107,8 @@ def __build_streets(lines):
 
         streets[street.name] = street
 
-        intersections[B].add_street(street)
-        intersections[E].add_Street(street)
+        intersections[street.B].add_street(street)
+        intersections[street.E].add_street(street)
 
     return streets
 
