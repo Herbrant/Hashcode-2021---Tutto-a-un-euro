@@ -133,7 +133,7 @@ def __build_streets(lines, intersections):
 
         streets[street.name] = street
 
-        intersections[street.B].add_street(street)
+        # intersections[street.B].add_street(street)
         intersections[street.E].add_street(street)
 
     return streets
