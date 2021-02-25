@@ -1,3 +1,5 @@
+import random 
+
 from Intersection import Intersection
 from Schedule import Command, Schedule
 from Car import Car
@@ -48,31 +50,37 @@ def solve(state, intersections, streets, cars):
 
     schedules = []
 
-    for intersection in intersections:
-        loop_size = min(state.D, 5)
+    naive_counts = 0
 
+    for intersection in intersections:
         priorities = dict()
-        
+
         total_interested_cars = 0
         for street in intersection.streets:
             total_interested_cars += street.interested_cars
 
-        if total_interested_cars == 0:
-            continue
-
-        for street in intersection.streets:
-            priorities[street.name] = street.interested_cars / total_interested_cars
+        loop_size = max(1, total_interested_cars)
 
         schedule = Schedule()
-
         schedule.i = intersection.id
 
-        for street in intersection.streets:
-            time_span = int(loop_size * priorities[street.name])
-            if time_span > 0:
-                schedule.add_command(Command(street.name, time_span))
+        if total_interested_cars > 0:
+            for street in intersection.streets:
+                priorities[street.name] = street.interested_cars / total_interested_cars
+
+            for street in intersection.streets:
+                time_span = int(loop_size * priorities[street.name])
+                if time_span > 0:
+                    schedule.add_command(Command(street.name, time_span))
+
+        # Naive, when no commands where added activate randomly
+        if len(schedule.commands) == 0:
+            naive_counts += 1
+            schedule.add_command(Command(intersection.streets[0].name, 1))
 
         schedules.append(schedule)
+
+    print(f"Naive counts: {naive_counts}")
 
     return schedules
 
