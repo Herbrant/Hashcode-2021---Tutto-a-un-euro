@@ -6,8 +6,6 @@ def main():
     solve()
     output("output_{}.txt".format(sys.argv[1]))
 
-    print(state.to_string())
-
 def output(filename):
     outfile = open(filename, "w")
 
